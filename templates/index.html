@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de mot de passe</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        form { margin: 20px auto; max-width: 300px; }
+        label { display: block; margin: 10px 0; }
+        input[type="number"] { width: 100%; padding: 5px; }
+        button { padding: 10px; margin-top: 10px; cursor: pointer; }
+        p { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Générateur de mot de passe</h1>
+    <form method="POST">
+        <label for="length">Longueur du mot de passe (1-250) :</label>
+        <input type="number" name="length" id="length" min="1" max="250" value="12" required>
+        <label><input type="checkbox" name="lowercase" checked> Inclure des lettres minuscules</label>
+        <label><input type="checkbox" name="uppercase" checked> Inclure des lettres majuscules</label>
+        <label><input type="checkbox" name="digits" checked> Inclure des chiffres</label>
+        <label><input type="checkbox" name="special"> Inclure des caractères spéciaux</label>
+        <button type="submit">Générer</button>
+    </form>
+    {% if password %}
+        <p>Mot de passe généré : <strong>{{ password }}</strong></p>
+    {% endif %}
+</body>
+</html>
