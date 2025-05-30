@@ -1,33 +1,89 @@
 <!DOCTYPE html>
-<html lang="fr">
-    <head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5581763497411854"
+<html lang="fr" class="dark">
+<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5581763497411854"Add commentMore actions
      crossorigin="anonymous"></script></head>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de mot de passe</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        form { margin: 20px auto; max-width: 300px; }
-        label { display: block; margin: 10px 0; }
-        input[type="number"] { width: 100%; padding: 5px; }
-        button { padding: 10px; margin-top: 10px; cursor: pointer; }
-        p { font-weight: bold; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur de mots de passe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
 </head>
-<body>
-    <h1>Générateur de mot de passe</h1>
-    <form method="POST">
-        <label for="length">Longueur du mot de passe (1-250) :</label>
-        <input type="number" name="length" id="length" min="1" max="250" value="12" required>
-        <label><input type="checkbox" name="lowercase" checked> Inclure des lettres minuscules</label>
-        <label><input type="checkbox" name="uppercase" checked> Inclure des lettres majuscules</label>
-        <label><input type="checkbox" name="digits" checked> Inclure des chiffres</label>
-        <label><input type="checkbox" name="special"> Inclure des caractères spéciaux</label>
-        <button type="submit">Générer</button>
-    </form>
-    {% if password %}
-        <p>Mot de passe généré : <strong>{{ password }}</strong></p>
-    {% endif %}
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-xl w-full">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">🔐 Générateur de mots de passe</h1>
+      <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded">🌓</button>
+    </div>
+
+    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+      <div class="mb-4">
+        <label class="block font-semibold">Longueur :</label>
+        <input type="range" id="length" min="4" max="64" value="12" class="w-full">
+        <div id="length-value" class="text-sm mt-1">12</div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+        <label><input type="checkbox" id="upper" checked> Majuscules (A-Z)</label>
+        <label><input type="checkbox" id="lower" checked> Minuscules (a-z)</label>
+        <label><input type="checkbox" id="digits" checked> Chiffres (0-9)</label>
+        <label><input type="checkbox" id="symbols" checked> Symboles (!@#...)</label>
+        <label><input type="checkbox" id="exclude"> Exclure ambigus (0, O, l, 1)</label>
+      </div>
+
+      <button id="generate" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Générer</button>
+
+      <div class="mt-4">
+        <label class="block text-sm font-semibold">Mot de passe généré :</label>
+        <div class="relative">
+          <input type="text" id="result" readonly class="w-full p-2 mt-1 rounded bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
+          <button id="copy" class="absolute right-2 top-2 text-sm px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700">Copier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const lengthInput = document.getElementById('length');
+    const lengthValue = document.getElementById('length-value');
+    const resultInput = document.getElementById('result');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    lengthInput.addEventListener('input', () => {
+      lengthValue.textContent = lengthInput.value;
+    });
+
+    document.getElementById('generate').addEventListener('click', async () => {
+      const payload = {
+        length: +lengthInput.value,
+        use_upper: document.getElementById('upper').checked,
+        use_lower: document.getElementById('lower').checked,
+        use_digits: document.getElementById('digits').checked,
+        use_symbols: document.getElementById('symbols').checked,
+        exclude_ambiguous: document.getElementById('exclude').checked
+      };
+      const response = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      resultInput.value = data.password;
+    });
+
+    document.getElementById('copy').addEventListener('click', () => {
+      resultInput.select();
+      document.execCommand('copy');
+      alert("Mot de passe copié !");
+    });
+
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+  </script>
 </body>
 </html>
