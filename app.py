@@ -1,44 +1,55 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import random
 import string
 
 app = Flask(__name__)
 
-def generate_password(length, use_lower, use_upper, use_digits, use_specials):
-    characters = ''
-    if use_lower:
-        characters += string.ascii_lowercase
+# Fonction pour générer un mot de passe
+def generate_password(length, use_upper, use_lower, use_digits, use_symbols, exclude_ambiguous):
+    upper = string.ascii_uppercase
+    lower = string.ascii_lowercase
+    digits = string.digits
+    symbols = "!@#$%^&*()-_=+[]{}|;:,.<>?"
+    ambiguous = "il1Lo0O"
+
+    char_pool = ""
     if use_upper:
-        characters += string.ascii_uppercase
+        char_pool += upper
+    if use_lower:
+        char_pool += lower
     if use_digits:
-        characters += string.digits
-    if use_specials:
-        characters += string.punctuation
+        char_pool += digits
+    if use_symbols:
+        char_pool += symbols
 
-    if not characters:
-        return "Veuillez sélectionner au moins un type de caractère."
+    if exclude_ambiguous:
+        char_pool = ''.join([c for c in char_pool if c not in ambiguous])
 
-    return ''.join(random.choice(characters) for _ in range(length))
+    if not char_pool:
+        return ""
 
-@app.route("/", methods=["GET", "POST"])
+    return ''.join(random.choice(char_pool) for _ in range(length))
+
+@app.route('/')
 def index():
-    password = ""
-    if request.method == "POST":
-        try:
-            length = int(request.form.get("length", 12))
-            if length < 1 or length > 250:
-                password = "La longueur doit être entre 1 et 250."
-            else:
-                use_lower = request.form.get("lowercase") == "on"
-                use_upper = request.form.get("uppercase") == "on"
-                use_digits = request.form.get("digits") == "on"
-                use_specials = request.form.get("special") == "on"
+    return render_template('index.html')
 
-                password = generate_password(length, use_lower, use_upper, use_digits, use_specials)
-        except ValueError:
-            password = "Entrée invalide pour la longueur."
+@app.route('/generate', methods=['POST'])
+def generate():
+    data = request.json
+    password = generate_password(
+        length=data.get('length', 12),
+        use_upper=data.get('use_upper', True),
+        use_lower=data.get('use_lower', True),
+        use_digits=data.get('use_digits', True),
+        use_symbols=data.get('use_symbols', True),
+        exclude_ambiguous=data.get('exclude_ambiguous', False)
+    )
+    return jsonify({"password": password})
 
-    return render_template("index.html", password=password)
+@app.route('/ads.txt')
+def serve_ads():
+    return send_from_directory('.', 'ads.txt')
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
