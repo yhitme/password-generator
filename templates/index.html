@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr" class="dark">
-<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5581763497411854"
-     crossorigin="anonymous"></script></head>
+     <head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5581763497411854"crossorigin="anonymous"></script></head>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Générateur de mots de passe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5581763497411854" crossorigin="anonymous"></script>
   <script>
-    tailwind.config = {
-      darkMode: 'class'
-    }
+    tailwind.config = { darkMode: 'class' }
   </script>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-4">
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-4">
   <div class="max-w-xl w-full">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-3xl font-bold">🔐 Générateur de mots de passe</h1>
@@ -45,6 +43,24 @@
         </div>
       </div>
     </div>
+
+    <!-- Mentions légales et politique de confidentialité -->
+    <section id="legal" class="mt-10 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
+      <h2 class="text-lg font-bold mb-2">Mentions légales</h2>
+      <p><strong>Éditeur :</strong> Ton nom ou nom de ton projet</p>
+      <p><strong>Contact :</strong> contact@tonsite.com</p>
+      <p><strong>Hébergeur :</strong> Render, Vercel ou autre</p>
+      <p>Ce site fournit un générateur de mots de passe sécurisé. Aucune donnée personnelle n’est collectée.</p>
+
+      <h2 class="text-lg font-bold mt-6 mb-2">Politique de confidentialité</h2>
+      <p>Les mots de passe sont générés localement dans votre navigateur. Ils ne sont pas enregistrés ni envoyés à un serveur.</p>
+      <p>Ce site utilise Google AdSense pour l’affichage de publicités. Google peut utiliser des cookies pour personnaliser les annonces.</p>
+      <p>En utilisant ce site, vous acceptez l’usage possible de cookies par Google et ses partenaires.</p>
+    </section>
+
+    <footer class="mt-8 text-center text-xs text-gray-600 dark:text-gray-400">
+      &copy; 2025 - Générateur de mots de passe | <a href="#legal" class="hover:underline">Mentions légales & Confidentialité</a>
+    </footer>
   </div>
 
   <script>
@@ -85,13 +101,5 @@
       document.documentElement.classList.toggle('dark');
     });
   </script>
-     <footer class="text-center mt-10 text-sm text-gray-600 dark:text-gray-400">
-  <p>&copy; 2025 Générateur de mots de passe sécurisé</p>
-  <p>
-    <a href="mentions-legales.html" class="underline hover:text-blue-500">Mentions légales</a> |
-    <a href="politique-confidentialite.html" class="underline hover:text-blue-500">Politique de confidentialité</a>
-  </p>
-</footer>
-
 </body>
 </html>
