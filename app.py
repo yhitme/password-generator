@@ -47,9 +47,20 @@ def generate():
     )
     return jsonify({"password": password})
 
+@app.route('/mentions-legales.html')
+def mentions_legales():
+    return render_template('mentions-legales.html')
+
+@app.route('/politique-confidentialite.html')
+def politique_confidentialite():
+    return render_template('politique-confidentialite.html')
+
 @app.route('/ads.txt')
 def serve_ads():
     return send_from_directory('.', 'ads.txt')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+        
+  
